@@ -1,4 +1,5 @@
 /*
+**INSTALE O POSTGRES**
 Adicionar ao banco de dados
 id integer not null pk
 cep varchar(8) not null
