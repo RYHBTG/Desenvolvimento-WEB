@@ -1,6 +1,7 @@
 const express = require('express')
 const axio = require('axios');
 const { default: axios } = require('axios');
+const { connected } = require('process');
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,11 @@ app.get('/',(req,res) => {
 app.get('/consulta-cep/:cep', async (req,res) => {
     const cep = req.params.cep;
     try{
+        const cepRegex = /^[0-9]{5}-?[0-9]{3}$/;
+        if (!cepRegex.test(cep)){
+            res.status(400).send('CEP inválido. Formato: XXXXX-XXX');
+            return;
+        }
         const response = await axios.get(`http://viacep.com.br/ws/${cep}/json/`);
         res.json(response.data);
     }catch(error){
