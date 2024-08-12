@@ -1,0 +1,17 @@
+/*
+Adicionar ao banco de dados
+id integer not null pk
+cep varchar(8) not null
+logradouro varchar(120) not null
+numero smallint not null
+complemento varchar(60)
+bairro varchar(60) not null
+cidade varchar(60) not null
+estado varchar(2) not null
+IBGE varchar(8) not null
+*/
+/*
+Depois utilize estes comandos:
+npx sequelize-cli init
+npx sequelize-cli mitragion:generate --name create-endereco
+*/
