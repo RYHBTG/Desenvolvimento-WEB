@@ -97,4 +97,35 @@ exports.deleteEndereco = async (req, res) => {
       res.status(500).json({ error: 'Erro ao deletar endereço', details: error.message });
     }
   };
-  
+
+const express = require('express');
+const app = express();
+const sequelize = require('./sequelize'); // assume que você tem um arquivo sequelize.js que exporta a instância do Sequelize
+
+app.use(express.json());
+
+app.post('/api/create-address-from-cep', async (req, res) => {
+  try {
+    const cep = req.body.cep;
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+
+    const address = {
+      logradouro: data.logradouro,
+      bairro: data.bairro,
+      cidade: data.localidade,
+      estado: data.uf,
+    };
+
+    const Address = sequelize.model('Address');
+    const createdAddress = await Address.create(address);
+
+    res.status(201).json(createdAddress);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Erro ao criar endereço' });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
